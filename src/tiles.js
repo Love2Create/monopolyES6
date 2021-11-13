@@ -279,144 +279,61 @@ function createTiles(){
         }
     }
     createCornerTiles();
-    
-    function createBottomTiles(){
-        //------- create container div for all small bottom tiles
-        const bottomTilesContainerDiv = document.createElement('div');
-        mainBoardDiv.appendChild(bottomTilesContainerDiv);
 
-        //------- bottomTilesContainer div info
-        bottomTilesContainerDiv.setAttribute('class', 'bottomTilesContainersSec');
-        bottomTilesContainerDiv.style.cssText = 'position: absolute;';
-        bottomTilesContainerDiv.style.width = smallTilesSecWidth + 'px';
-        bottomTilesContainerDiv.style.height = tileHeight + 'px';
-        bottomTilesContainerDiv.style.top = (boardWidth - tileHeight) + 'px';
-        bottomTilesContainerDiv.style.left = tileHeight + 'px';
-        bottomTilesContainerDiv.style.width = (boardWidth - tileHeight * 2) +'px';
-        bottomTilesContainerDiv.style.height = tileWidth * 2 +'px';
+    function createSmallTileSec(obj, sidePos){
 
-        //------- reverse bottomTilesObj array order
-        bottomTilesObj.reverse();
+        const objEl = obj.reverse();
+        console.log(objEl);
 
-        //------- create each bottom smallBottom tiles
-        for (let i = 0; i < bottomTilesObj.length; i++){
+        const sidePosEl = sidePos.toUpperCase();
+        console.log(sidePosEl);
 
-            //---------- create smallBottom tile div
-            const smallBottomTile = document.createElement('div');
-            bottomTilesContainerDiv.appendChild(smallBottomTile);
-
-            //---------- smallBottom tile div info
-            smallBottomTile.setAttribute('class', 'smallBottomTile'+i);
-            smallBottomTile.style.cssText = 'position: absolute; top: 0px; background-color: white; border: 1px solid black';
-            smallBottomTile.style.width = tileWidth + 'px';
-            smallBottomTile.style.height = tileHeight + 'px';
-            smallBottomTile.style.top = '0px';
-            smallBottomTile.style.left = tileWidth * i + 'px';
-            smallBottomTile.innerHTML = bottomTilesObj[i].id + ' ' + bottomTilesObj[i].name;
-        }
-    }
-    createBottomTiles();    
-
-    function createLeftTiles(){
-        //--------- create container div for all small left side tiles
-        const leftTilesContainerDiv = document.createElement('div');
-        mainBoardDiv.appendChild(leftTilesContainerDiv);
-
+        //---------- create container div
+        const secContainerDiv = document.createElement('div');
+        mainBoardDiv.appendChild(secContainerDiv);
         //---------- container div info
-        leftTilesContainerDiv.style.cssText = 'position: absolute; background-color: yellow; transform: rotate(90deg); transform-origin: top left';
-        leftTilesContainerDiv.style.width = smallTilesSecWidth + 'px';
-        leftTilesContainerDiv.style.height = tileHeight + 'px';
-        leftTilesContainerDiv.style.top = (boardWidth - tileHeight * 5.5) + 'px';
-        leftTilesContainerDiv.style.left = tileHeight + 'px';
-        leftTilesContainerDiv.style.width = (boardWidth - tileHeight * 2) +'px';
-        leftTilesContainerDiv.style.height = tileWidth * 2 +'px';
+        secContainerDiv.style.width = smallTilesSecWidth + 'px';
+        secContainerDiv.style.height = tileHeight + 'px';
+        secContainerDiv.style.position = 'absolute';
+        // secContainerDiv.style.backgroundColor = 'yellow';
 
-        //---------- reverse leftTilesObj array
-        leftTilesObj.reverse();
+        for (let i = 0; i < objEl.length; i++){
 
-        for (let i = 0; i<leftTilesObj.length; i++){
-
-            //--------- create div for each small left tiles
-            const smallLeftTile = document.createElement('div');
-            leftTilesContainerDiv.appendChild(smallLeftTile);
-
-            //--------- small left tile div info
-            smallLeftTile.style.cssText = 'position: absolute; border: 1px solid black; background-color: white';
-            smallLeftTile.style.width = tileWidth + 'px';
-            smallLeftTile.style.height = tileHeight + 'px';
-            smallLeftTile.style.left = tileWidth * i + 'px';
-            smallLeftTile.innerHTML = leftTilesObj[i].id + ' ' + leftTilesObj[i].name;
+            //------------ create individual small tile container div
+            const smallTileDiv = document.createElement('div');
+            secContainerDiv.appendChild(smallTileDiv);
+            //------------ small tile container div info
+            smallTileDiv.innerHTML = objEl[i].id + ' ' + objEl[i].name;
+            smallTileDiv.style.cssText = 'position: absolute; border: 1px solid black';
+            smallTileDiv.style.width = tileWidth + 'px';
+            smallTileDiv.style.height = tileHeight + 'px';
+            smallTileDiv.style.left = tileWidth * i + 'px';
         }
-    }
-    createLeftTiles();
-    
-    function createTopTiles(){
-        
-        //---------- create container div for top small tiles
-        const topTilesContainerDiv = document.createElement('div');
-        mainBoardDiv.appendChild(topTilesContainerDiv);
 
-        //---------- top small tiles container div info
-        topTilesContainerDiv.style.cssText = 'position: absolute; transform-origin: center; transform: rotate(180deg)';
-        topTilesContainerDiv.style.width = smallTilesSecWidth + 'px';
-        topTilesContainerDiv.style.height = tileHeight + 'px';
-        topTilesContainerDiv.style.left = tileHeight + 'px';
-
-        //---------- reverse topTilesObj
-        topTilesObj.reverse();
-
-        //---------- create top small tiles
-        for (let i = 0; i < topTilesObj.length; i++){
-
-            //----------- create small top tile divs
-            const smallTopTile = document.createElement('div');
-            topTilesContainerDiv.appendChild(smallTopTile);
-
-            //----------- small top tile div info
-            smallTopTile.innerHTML = topTilesObj[i].id + ' ' + topTilesObj[i].name;
-            smallTopTile.style.cssText = 'position: absolute; border: 1px solid black';
-            smallTopTile.style.width = tileWidth + 'px';
-            smallTopTile.style.height = tileHeight + 'px';
-            smallTopTile.style.top = '0px';
-            smallTopTile.style.left = tileWidth * i + 'px';
-
-
+        if(sidePosEl === 'TOP'){
+            secContainerDiv.style.top = '0px';
+            secContainerDiv.style.left = tileHeight + 'px';
+        }if(sidePosEl === 'LEFT'){
+            secContainerDiv.style.transformOrigin = 'top left';
+            secContainerDiv.style.transform = 'rotate(90deg)';
+            secContainerDiv.style.top = tileHeight + 'px';
+            secContainerDiv.style.left = tileHeight + 'px';
+        }if(sidePosEl === 'RIGHT'){
+            secContainerDiv.style.transformOrigin = 'top left';
+            secContainerDiv.style.transform = 'rotate(270deg)';
+            secContainerDiv.style.top = boardWidth - tileHeight + 'px';
+            secContainerDiv.style.left = boardWidth - tileHeight + 'px';
+        }if(sidePosEl === 'BOTTOM'){
+            secContainerDiv.style.top = boardWidth - tileHeight + 'px';
+            secContainerDiv.style.left = tileHeight + 'px';
         }
+
     }
-    createTopTiles();
+    createSmallTileSec(topTilesObj, 'top');
+    createSmallTileSec(bottomTilesObj, 'bottom');
+    createSmallTileSec(leftTilesObj, 'left');
+    createSmallTileSec(rightTilesObj, 'right');
 
-    function createRightTiles(){
-
-        //--------- create container div for right small tiles
-        const rightTilesContainerDiv = document.createElement('div');
-        mainBoardDiv.appendChild(rightTilesContainerDiv);
-
-        //--------- right container div info
-        rightTilesContainerDiv.style.cssText = 'position: absolute; transform-origin: top left; transform: rotate(270deg)';
-        rightTilesContainerDiv.style.width = smallTilesSecWidth + 'px';
-        rightTilesContainerDiv.style.height = tileHeight + 'px';
-        rightTilesContainerDiv.style.top = boardWidth - tileHeight + 'px';
-        rightTilesContainerDiv.style.left = boardWidth - tileHeight + 'px';
-
-        //--------- reverse rightTilesObj
-        rightTilesObj.reverse();
-
-        //--------- create right small tiles
-        for (let i = 0; i < rightTilesObj.length; i++){
-
-            //--------- create small right tile divs
-            const smallRightTile = document.createElement('div');
-            rightTilesContainerDiv.appendChild(smallRightTile);
-
-            //--------- small right tile div info
-            smallRightTile.innerHTML = rightTilesObj[i].id + ' ' + rightTilesObj[i].name;
-            smallRightTile.style.cssText = 'position: absolute; border: 1px solid black';
-            smallRightTile.style.width = tileWidth + 'px';
-            smallRightTile.style.height = tileHeight + 'px';
-            smallRightTile.style.left = tileWidth * i + 'px';
-        }
-    }
-    createRightTiles();
 }
 
 
