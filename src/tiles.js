@@ -275,17 +275,12 @@ const tileWidth = boardWidth / 13;
 const tileHeight = tileWidth * 2;
 const smallTilesSecWidth = boardWidth - tileHeight * 2;
 
-//----------- create main board div
-const mainBoardDiv = document.createElement('div');
-
-//----------- main board div info
-mainBoardDiv.style.cssText = 'position: relative; width: 735px; height: 735px; border: 1px solid black; margin: 0 auto';
+let mainBoardDiv;
 
 //--------------- function to create all the corner and small tiles
-function createTiles() {
+function createTiles(container) {
 
-    //------------ append mainBoardDiv
-    document.body.appendChild(mainBoardDiv);
+    mainBoardDiv = container;
 
     //------------ run function to create all corner tiles
     createCornerTiles(cornerTilesObj);
@@ -307,7 +302,7 @@ function createTiles() {
     //     ...cornerTilesObj, ...topTilesObj, ...bottomTilesObj, ...leftTilesObj, ...rightTilesObj
     // ];
 
-    //--------- join array #3: flatten (need import lodash)
+    //--------- join array #3: flatten (need import lodash flatten, then add "import { flatten } from 'lodash'")
     const allTilesObj = flatten([
         cornerTilesObj, topTilesObj, bottomTilesObj, leftTilesObj, rightTilesObj
     ]);
@@ -418,4 +413,4 @@ function createSmallTileSec(obj, sidePos) {
 
 
 //------------- exports
-export { cornerTilesObj, createTiles }
+export { createTiles }
