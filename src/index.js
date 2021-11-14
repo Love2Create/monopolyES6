@@ -13,7 +13,6 @@ window.addEventListener('load', () => {
     mainBoardDiv.style.cssText = 'position: relative; width: 735px; height: 735px; border: 1px solid black; margin: 0 auto';
 
     const tiles = createTiles(mainBoardDiv);
-    console.log(tiles);
 
     dice(mainBoardDiv);
 

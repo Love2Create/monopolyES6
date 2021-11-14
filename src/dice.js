@@ -1,5 +1,4 @@
-
-
+import _ from "lodash";
 
 //--------- create two divs for the dice
 function dice(gameContainer) {
@@ -21,7 +20,8 @@ function dice(gameContainer) {
         const dice = document.createElement('div');
         dicesContainerDiv.appendChild(dice);
         //---------- dice div info
-        dice.style.cssText = 'display: flex; width: 100px; height: 100px; border: 3px solid black; background-color: white; font-size: 70px; color: black; border-radius: 25px; center; align-items: center; justify-content: center;';
+        dice.style.cssText = 'display: flex; width: 40%; height: 60%; border: 3px solid black; background-color: white; font-size: 70px; color: black; border-radius: 25px; center; align-items: center; justify-content: center;';
+        dice.setAttribute('id', 'dice'+i);
         dice.innerHTML = '?';
     }
 
@@ -31,8 +31,31 @@ function dice(gameContainer) {
 
     const diceBtn = document.createElement('div');
     diceBtnContainer.appendChild(diceBtn);
-    diceBtn.style.cssText = 'display: flex; width: 180px; height: 40px; background-color: purple; color: white; font-size: 20px; align-items: center; justify-content: center; border-radius: 10px';
+    diceBtn.style.cssText = 'display: flex; width: 80%; height: 40px; background-color: purple; color: white; font-size: 20px; align-items: center; justify-content: center; border-radius: 10px';
     diceBtn.innerHTML = 'ROLL THE DICE';
+    diceBtnContainer.addEventListener('mouseover', ()=>{
+        diceBtnContainer.style.cursor = 'pointer';
+        diceBtn.style.backgroundColor = 'pink';
+        diceBtn.style.color = 'black';
+    });
+    diceBtnContainer.addEventListener('mouseout', ()=>{
+        diceBtn.style.color = 'white';
+        diceBtn.style.backgroundColor = 'purple';
+    })
+    diceBtnContainer.addEventListener('click', ()=>{
+        
+        for (let i = 1; i < 3; i++){
+            
+            const diceNumContainer = document.querySelector(`#dice${i}`);
+
+            const diceNum = Math.floor ( Math.random() * 6 ) + 1;
+
+            console.log(diceNum);
+
+            diceNumContainer.innerHTML =  diceNum;
+        }
+
+    });
 
 }
 
