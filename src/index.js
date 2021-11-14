@@ -4,7 +4,8 @@ import {cornerTilesObj, createTiles} from './tiles.js';
 
 window.addEventListener('load', ()=>{
     
-    createTiles()
+    const tiles = createTiles();
+    console.log(tiles);
 
     // const bodyEl = document.querySelector('body');
     // const imgEl = createDomElement('img',{src:`${baseURL}logo.png`});
