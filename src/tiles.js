@@ -1,4 +1,4 @@
-//-------------- import
+//import
 import { flatten } from 'lodash';
 
 
@@ -277,7 +277,7 @@ const smallTilesSecWidth = boardWidth - tileHeight * 2;
 
 let mainBoardDiv;
 
-//--------------- function to create all the corner and small tiles
+//--------------- function to create all the corner and small tiles ---------------
 function createTiles(container) {
 
     mainBoardDiv = container;
@@ -292,7 +292,8 @@ function createTiles(container) {
     createSmallTileSec(leftTilesObj, 'left');
     createSmallTileSec(rightTilesObj, 'right');
 
-    //--------- return one complete array of tiles
+    
+    //-------------- return one complete array of tiles
 
     //--------- join array #1: using concat()
     // const allTilesObj = cornerTilesObj.concat(bottomTilesObj, leftTilesObj, topTilesObj, rightTilesObj);
@@ -307,16 +308,15 @@ function createTiles(container) {
         cornerTilesObj, topTilesObj, bottomTilesObj, leftTilesObj, rightTilesObj
     ]);
 
-
+    //--------- sort the array based on the id order & return the new array
     allTilesObj.sort((a, b) => {
         return a.id - b.id;
     });
-
     return allTilesObj;
 
 }
 
-//----------- function to create all corner tiles
+//----------- function to create all corner tiles -----------
 function createCornerTiles(obj) {
 
     //----------- declare the main variables
@@ -328,18 +328,20 @@ function createCornerTiles(obj) {
         //------------ create each corner tile div
         const cornerTile = document.createElement('div');
         mainBoardDiv.appendChild(cornerTile);
-        //------------ corner tile info
+        //------------ div info
         cornerTile.innerHTML = cornerObjEl[i].id + ' ' + cornerObjEl[i].name;
         cornerTile.setAttribute('class', cornerObjEl[i].type);
+        cornerTile.setAttribute('class', 'cornerTiles');
         cornerTile.setAttribute('id', cornerObjEl[i].id);
-        cornerTile.style.position = 'absolute';
         cornerTile.style.width = tileHeight + 'px';
         cornerTile.style.height = tileHeight + 'px';
 
-        //------------ position each corner tiles
         
+        //------------ adding HTML element info to the each element of the array
         cornerObjEl[i].element = cornerTile;
 
+
+        //------------ position each corner tiles
         if (cornerObjEl[i].type === 'go') {
             cornerTile.style.backgroundColor = 'orange';
             cornerTile.style.top = (boardWidth - tileHeight) + 'px';
@@ -361,7 +363,7 @@ function createCornerTiles(obj) {
     }
 }
 
-//------------ function to create all small tiles
+//------------ function to create all small tiles -----------
 function createSmallTileSec(obj, sidePos) {
 
     //---------- declare main variables
@@ -371,30 +373,33 @@ function createSmallTileSec(obj, sidePos) {
     //---------- create container div
     const secContainerDiv = document.createElement('div');
     mainBoardDiv.appendChild(secContainerDiv);
-    //---------- container div info
+    //---------- div info
     secContainerDiv.style.width = smallTilesSecWidth + 'px';
     secContainerDiv.style.height = tileHeight + 'px';
     secContainerDiv.style.position = 'absolute';
-    // secContainerDiv.style.backgroundColor = 'yellow';
-
+    
+    //---------- create all the small tiles
     for (let i = 0; i < smallTileObjEl.length; i++) {
 
         //------------ create individual small tile container div
         const smallTileDiv = document.createElement('div');
         secContainerDiv.appendChild(smallTileDiv);
-        //------------ small tile container div info
+        //---------- div info
         smallTileDiv.innerHTML = smallTileObjEl[i].id + ' ' + smallTileObjEl[i].name;
-        smallTileDiv.style.cssText = 'position: absolute; border: 1px solid black';
+        smallTileObjEl[i].element = smallTileDiv;
+        smallTileDiv.setAttribute ('class', 'smallTiles');
+        smallTileDiv.setAttribute ('id', smallTileObjEl[i].id);
         smallTileDiv.style.width = tileWidth + 'px';
         smallTileDiv.style.height = tileHeight + 'px';
         smallTileDiv.style.left = tileWidth * i + 'px';
-
-        smallTileObjEl[i].element = smallTileDiv;
     }
 
+    //---------------- positioning all small tiles
     if (sidePosEl === 'TOP') {
         secContainerDiv.style.top = '0px';
         secContainerDiv.style.left = tileHeight + 'px';
+        secContainerDiv.style.transformOrigin = 'center';
+        secContainerDiv.style.transform = 'rotate(180deg)';
     } if (sidePosEl === 'LEFT') {
         secContainerDiv.style.transformOrigin = 'top left';
         secContainerDiv.style.transform = 'rotate(90deg)';
@@ -412,5 +417,5 @@ function createSmallTileSec(obj, sidePos) {
 }
 
 
-//------------- exports
+//exports
 export { createTiles }
