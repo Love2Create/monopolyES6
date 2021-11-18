@@ -3,9 +3,17 @@ import './index.css'
 import { baseURL, createDomElement } from './utilis.js';
 import { createTiles } from './tiles.js';
 import { dice } from './dice';
-import { playerControl } from './player.js';
+import { playerPiecesObj, playerControl } from './player.js';
 
 window.addEventListener('load', () => {
+
+
+
+    //------------ DO NOT DELETE (example on how to get the image)
+    // const imgDiv = document.createElement('img');
+    // document.body.appendChild(imgDiv);
+    // imgDiv.src = `${baseURL}dog.png`;
+
 
     //------------ create main board div
     const mainBoardDiv = document.createElement('div');

@@ -37,7 +37,9 @@
     display: flex; 
     width: 250px; 
     height: 160px; 
-    justify-content: space-evenly; align-items: center; flex-direction: row;
+    justify-content: space-evenly; 
+    align-items: center; 
+    flex-direction: row;
 }
 .dices{
     display: flex; 
@@ -69,6 +71,56 @@
 }
 
 /*--------- player controller */
+/* main container divs */
+.playerModalContainer{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(225, 225, 225);
+    background-color: rgba(225, 225, 225, 0.8);
+    z-index: 20;
+    border: 1px solid rgb(80, 80, 80);
+}
+#modalContentDiv{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 80%;
+    background-color: white;
+    border: 1px solid rgb(80, 80, 80);
+    margin: 50px auto;
+    padding: 10px;
+}
+
+/* btns */
+#closeBtn{
+    display: flex;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    background-color: rgb(80, 80, 80);
+    color: white;
+    box-sizing: border-box;
+    /* padding: 10px; */
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    /* margin: 20px; */
+}
+
+#btnsContainer{
+    display: flex;
+    width: 80%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 #newGameBtn{
     display: flex;
     width: 200px;
@@ -81,19 +133,85 @@
     font-size: 30px;
     align-items: center;
     justify-content: center;
+    user-select: none;
 }
 #newGameBtn:hover{
     cursor: pointer;
     background-color: pink;
     color: black;
 }
-.playerModal{
-    position: fixed;
-    top: 0;
-    left: 0;
+#addPlayerBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 170px;
+    height: 50px;
+    background-color: green;
+    border-radius: 10px;
+    color: white;
+    font-size: 22px;
+    user-select: none;
+    margin: 20px;
+}
+#addPlayerBtn:hover{
+    cursor: pointer;
+    background-color: orange;
+    color: black;
+}
+.playerInfo{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
     width: 100%;
-    height: 100%;
-    background-color: rgb(225, 225, 225);
-    background-color: rgba(225, 225, 225, 0.5);
-    z-index: 20;
+    border: 1px solid rgb(0, 0, 0);
+    padding: 3px 5px;
+    margin: 10px;
+}
+#startGameBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 170px;
+    height: 50px;
+    background-color: red;
+    border-radius: 10px;
+    color: white;
+    font-size: 22px;
+    margin: 20px;
+    user-select: none;
+}
+#startGameBtn:hover{
+    cursor: pointer;
+    background-color: orange;
+    color: black;
+}
+
+.playerNameContainer{
+    display: flex;
+    width: 40%;
+    justify-content: center;
+    margin: 20px 0px;
+}
+label{
+   margin-right: 5px; 
+}
+
+::placeholder{
+    color: rgb(173, 161, 163);
+}
+
+
+
+#playerPiecesContainer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 60%;
+    margin: 10px 0px;
+}
+.playerPieceImage{
+    display: flex;
+    width: 30px;
 }
