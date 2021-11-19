@@ -171,24 +171,27 @@ function playerControl() {
             for (let i = 0; i < playerPiecesObj.length; i++){
 
                 console.log(`playerPiecesObj[${i}].src`);
-                
-                const radioInput = document.createElement('input');
-                playerPiecesContainer.appendChild(radioInput);
-                radioInput.setAttribute('type', 'radio');
-                radioInput.setAttribute('name', playerPiecesObj[i].pieceName);
-                radioInput.setAttribute('id', playerPiecesObj[i].index);
 
                 const radioLabel = document.createElement('label');
                 playerPiecesContainer.appendChild(radioLabel);
                 radioLabel.setAttribute('for', playerPiecesObj[i].pieceName);
+
+                const radioInput = document.createElement('input');
+                radioLabel.appendChild(radioInput);
+                radioInput.setAttribute('type', 'radio');
+                radioInput.setAttribute('name', `playerPiecesObj${playerNum}`);
+                radioInput.setAttribute('value', '1');
+                radioInput.setAttribute('id', playerPiecesObj[i].index);
+
+                radioLabel.addEventListener('click', () => {
+                    radioInput.checked = 'true';
+                });
                 
                 const radioImg = document.createElement('img');
                 radioLabel.appendChild(radioImg);
                 radioImg.src = playerPiecesObj[i].src;
                 radioImg.setAttribute('class', 'playerPieceImage');
-
-                
-                console.log(playerPiecesObj[i].src);
+        
             }
 
 
@@ -207,14 +210,21 @@ function playerControl() {
 
         const playerInfoEls = document.querySelectorAll('.playerInfo');
         const playerInfoList = [...playerInfoEls].map((item, i) => {
-            return {
-                name: item.querySelector('input').value,
-                playerIndex: i,
+            if (item.querySelector('input').value != ''){
+                item.querySelector('input').style.border = '1px solid black';
+                return {
+                    name: item.querySelector('input').value,
+                    playerIndex: i,
+                }
+            }if (item.querySelector('input').value === ''){
+                console.log('hey, you need to fill this out');
+                item.querySelector('input').style.border = '2px solid red';
             }
+
         });
 
-        console.log(playerInfoEls);
-        console.log(playerInfoList);
+        // console.log(playerInfoEls);
+        // console.log(playerInfoList);
     });
 
 

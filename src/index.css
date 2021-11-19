@@ -89,7 +89,7 @@
     justify-content: center;
     align-items: center;
     position: relative;
-    width: 80%;
+    width: 90%;
     background-color: white;
     border: 1px solid rgb(80, 80, 80);
     margin: 50px auto;
@@ -158,6 +158,9 @@
     background-color: orange;
     color: black;
 }
+#playerInfoContainer{
+    width: 70%;
+}
 .playerInfo{
     display: flex;
     flex-direction: row;
@@ -193,8 +196,13 @@
     justify-content: center;
     margin: 20px 0px;
 }
+.playerName{
+    border: 1px solid black;
+    box-sizing: border-box;
+}
 label{
    margin-right: 5px; 
+   box-sizing: border-box;
 }
 
 ::placeholder{
@@ -213,5 +221,23 @@ label{
 }
 .playerPieceImage{
     display: flex;
-    width: 30px;
+    width: 40px;
+}
+
+#playerPiecesContainer input{
+    position: absolute;
+    visibility: hidden;
+    width: 0px;
+    height: 0px;
+}
+#playerPiecesContainer label input + img{
+    cursor: pointer;
+}
+#playerPiecesContainer label input + img:hover {
+    background-color: yellow;
+}
+#playerPiecesContainer label input:checked + img {
+    border: 2px solid black;
+    background-color: yellow;
+    padding: 2px;
 }
