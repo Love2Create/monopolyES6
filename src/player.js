@@ -1,8 +1,9 @@
 //import
 import { baseURL, createDomElement } from './utilis.js';
+import { uniq } from 'lodash';
 
 //---------- array of player piece objects
-const playerPiecesObj=[
+const playerPiecesObj = [
     {
         pieceName: 'car',
         src: `${baseURL}car.png`,
@@ -142,7 +143,7 @@ function playerControl() {
             const playerNameContainer = document.createElement('div');
             playerInfo.appendChild(playerNameContainer);
             playerNameContainer.setAttribute('class', 'playerNameContainer');
-            
+
             //-------- create a label for the input field
             const playerLabel = document.createElement('label');
             playerNameContainer.appendChild(playerLabel);
@@ -168,30 +169,28 @@ function playerControl() {
             playerPiecesContainer.setAttribute('id', 'playerPiecesContainer');
 
             //-------- create the radio buttons along with image of the player pieces
-            for (let i = 0; i < playerPiecesObj.length; i++){
-
-                console.log(`playerPiecesObj[${i}].src`);
+            for (let i = 0; i < playerPiecesObj.length; i++) {
 
                 const radioLabel = document.createElement('label');
                 playerPiecesContainer.appendChild(radioLabel);
-                radioLabel.setAttribute('for', playerPiecesObj[i].pieceName);
+                // radioLabel.setAttribute('for', playerPiecesObj[i].pieceName);
 
                 const radioInput = document.createElement('input');
                 radioLabel.appendChild(radioInput);
                 radioInput.setAttribute('type', 'radio');
                 radioInput.setAttribute('name', `playerPiecesObj${playerNum}`);
-                radioInput.setAttribute('value', '1');
-                radioInput.setAttribute('id', playerPiecesObj[i].index);
+                radioInput.setAttribute('selection-data', playerPiecesObj[i].pieceName);
+                radioInput.setAttribute('class', 'playerPieces');
 
                 radioLabel.addEventListener('click', () => {
                     radioInput.checked = 'true';
                 });
-                
+
                 const radioImg = document.createElement('img');
                 radioLabel.appendChild(radioImg);
                 radioImg.src = playerPiecesObj[i].src;
                 radioImg.setAttribute('class', 'playerPieceImage');
-        
+
             }
 
 
@@ -208,23 +207,49 @@ function playerControl() {
     //---------- create playersObj with player names and chosen pieces
     startGameBtn.addEventListener('click', () => {
 
+
+
         const playerInfoEls = document.querySelectorAll('.playerInfo');
-        const playerInfoList = [...playerInfoEls].map((item, i) => {
-            if (item.querySelector('input').value != ''){
-                item.querySelector('input').style.border = '1px solid black';
+
+        const playerInfoArray = [...playerInfoEls];
+
+        const checkPlayerName = uniq(playerInfoArray
+            .map(item => item.querySelector('.playerName').value)
+            .filter(item => item != '')
+        );
+
+        // console.log(checkPlayerName);
+
+        const didSelectPiece = playerInfoEls.length === document.querySelectorAll('.playerPieces:checked').length;
+
+        const hasUniqPlayer = playerInfoEls.length === checkPlayerName.length;
+
+        console.log(hasUniqPlayer);
+
+        // console.log(didSelectPiece);
+
+        if (didSelectPiece) {
+            const playerInfoList = playerInfoArray.map((item, i) => {
+
+                // item.querySelector('.playerName').style.border = '1px solid black';
+
                 return {
-                    name: item.querySelector('input').value,
+                    name: item.querySelector('.playerName').value,
                     playerIndex: i,
+                    pieceName: item.querySelector('.playerPieces:checked').getAttribute('selection-data'),
                 }
-            }if (item.querySelector('input').value === ''){
-                console.log('hey, you need to fill this out');
-                item.querySelector('input').style.border = '2px solid red';
-            }
 
-        });
 
-        // console.log(playerInfoEls);
-        // console.log(playerInfoList);
+            });
+
+            // console.log(playerInfoList);
+        }
+
+
+
+
+        console.log(playerInfoEls);
+
     });
 
 
