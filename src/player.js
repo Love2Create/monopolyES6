@@ -1,6 +1,6 @@
 //import
 import { baseURL, createDomElement } from './utilis.js';
-import { uniq } from 'lodash';
+import { each, forEach, uniq } from 'lodash';
 
 //---------- array of player piece objects
 const playerPiecesObj = [
@@ -48,64 +48,87 @@ const playerPiecesObj = [
 
 //----------- set number of player to 0
 let playerNum = 0;
+const fullPiecesName = [];
 
 
+//-------- function that enables all radio buttons
+function enableAll() {
+    const itemEnableList = document.querySelectorAll('[selection-data]');
+
+    for (let i = 0; i < itemEnableList.length; i++) {
+        itemEnableList[i].parentNode.classList.add('enabled');
+    }
+}
+
+//-------- function that disables all but the selected radio button
+function disableSelected() {
+    const piecesNotChecked = document.querySelectorAll(`.playerPieces:checked`);
+
+    const piecesNotCheckedList = [...piecesNotChecked].map(item => item.getAttribute('selection-data'));
+
+    piecesNotCheckedList.forEach((item) => {
+
+        const itemList = document.querySelectorAll(`[selection-data="${item}"]:not(:checked)`);
+
+        for (let i = 0; i < itemList.length; i++) {
+            itemList[i].parentNode.classList.remove('enabled');
+        }
+
+    });
+}
+
+
+//----------------------- main player control function ------------------
 function playerControl() {
 
     //----------- create new game button
     //----------- clicking this activates the player modal
     const newGameBtn = document.createElement('div');
-    document.body.appendChild(newGameBtn);
-    // new game button info
+    motherboard.appendChild(newGameBtn);
     newGameBtn.setAttribute('id', 'newGameBtn');
     newGameBtn.innerHTML = 'NEW GAME';
 
-
+    newGameBtn.addEventListener('click', () => {
+        playerModalContainer.style.visibility = 'visible';
+    });
 
     //--------------------- player modal ----------------------
 
     //----------- create the main container for the player modal
     const playerModalContainer = document.createElement('div');
     document.body.appendChild(playerModalContainer);
-    // div info
     playerModalContainer.setAttribute('class', 'playerModalContainer');
 
     //----------- create div for all modal content
     const modalContentDiv = document.createElement('div');
     playerModalContainer.appendChild(modalContentDiv);
-    // div info
     modalContentDiv.setAttribute('id', 'modalContentDiv');
 
     //----------- create close button
     const closeBtn = document.createElement('div');
     modalContentDiv.appendChild(closeBtn);
-    // close button info
     closeBtn.setAttribute('id', 'closeBtn');
     closeBtn.innerHTML = 'X';
 
     //----------- create a div that container each player's info
     const playerInfoContainer = document.createElement('div');
     modalContentDiv.appendChild(playerInfoContainer);
-    // div info
     playerInfoContainer.setAttribute('id', 'playerInfoContainer');
 
     //----------- create a div for both buttons (new player and start game) 
     const btnsContainer = document.createElement('div');
     modalContentDiv.appendChild(btnsContainer);
-    // div info
     btnsContainer.setAttribute('id', 'btnsContainer');
 
     //----------- create add player button
     const addPlayerBtn = document.createElement('div');
     btnsContainer.appendChild(addPlayerBtn);
-    // add player button info
     addPlayerBtn.setAttribute('id', 'addPlayerBtn');
     addPlayerBtn.innerHTML = 'ADD A PLAYER';
 
     //----------- create start game button
     const startGameBtn = document.createElement('div');
     btnsContainer.appendChild(startGameBtn);
-    // start game button info
     startGameBtn.setAttribute('id', 'startGameBtn');
     startGameBtn.innerHTML = 'START GAME';
     startGameBtn.style.display = 'none';
@@ -129,13 +152,13 @@ function playerControl() {
             //-------- create a div that contain each player's input and piece
             const playerInfo = document.createElement('div');
             playerInfoContainer.appendChild(playerInfo);
-            // div info
             playerInfo.setAttribute('class', 'playerInfo');
             playerInfo.setAttribute('id', `${playerId}info`);
 
             const playerNumberText = document.createElement('div');
             playerInfo.appendChild(playerNumberText);
             playerNumberText.innerHTML = playerNum + ': ';
+
 
 
             //------------ create input field and choices for player pieces --------------
@@ -147,20 +170,20 @@ function playerControl() {
             //-------- create a label for the input field
             const playerLabel = document.createElement('label');
             playerNameContainer.appendChild(playerLabel);
-            // label info
             playerLabel.setAttribute('for', 'playerName');
             playerLabel.innerHTML = 'PLAYER NAME: ';
 
             //-------- create input field for player name 
             const playerName = document.createElement('input');
             playerNameContainer.appendChild(playerName);
-            // input field info
             playerName.setAttribute('id', `player${playerNum}`);
             playerName.setAttribute('class', 'playerName');
             playerName.setAttribute('placeholder', 'enter player name');
             playerName.setAttribute('value', '');
 
-            //-------- create choices for player pieces 
+
+
+            //------------  create choices for player pieces ------------ 
 
             //-------- create div containing list of player pieces to choose from
             const playerPiecesContainer = document.createElement('div');
@@ -171,10 +194,12 @@ function playerControl() {
             //-------- create the radio buttons along with image of the player pieces
             for (let i = 0; i < playerPiecesObj.length; i++) {
 
+                //------- create label that contains the radio buttons and correlated images
                 const radioLabel = document.createElement('label');
                 playerPiecesContainer.appendChild(radioLabel);
-                // radioLabel.setAttribute('for', playerPiecesObj[i].pieceName);
+                radioLabel.setAttribute('class', 'piecesLabel');
 
+                //------- create radio buttons 
                 const radioInput = document.createElement('input');
                 radioLabel.appendChild(radioInput);
                 radioInput.setAttribute('type', 'radio');
@@ -182,17 +207,22 @@ function playerControl() {
                 radioInput.setAttribute('selection-data', playerPiecesObj[i].pieceName);
                 radioInput.setAttribute('class', 'playerPieces');
 
-                radioLabel.addEventListener('click', () => {
-                    radioInput.checked = 'true';
+                //-------- enable and disable pieces based on what's selected
+                radioInput.addEventListener('change', (e) => {
+                    enableAll();
+                    disableSelected()
                 });
 
+                //-------- create player pieces images
                 const radioImg = document.createElement('img');
                 radioLabel.appendChild(radioImg);
                 radioImg.src = playerPiecesObj[i].src;
                 radioImg.setAttribute('class', 'playerPieceImage');
 
+                //-------- enable and disable pieces based on what's selected
+                enableAll();
+                disableSelected();
             }
-
 
         }
         if (playerNum === 2) {
@@ -205,54 +235,58 @@ function playerControl() {
 
     //---------- events when start game button is clicked
     //---------- create playersObj with player names and chosen pieces
+
+    const alertBox = document.createElement('div');
+    modalContentDiv.insertBefore(alertBox, playerInfoContainer);
+    alertBox.setAttribute('class', 'alertBox');
+
     startGameBtn.addEventListener('click', () => {
-
-
 
         const playerInfoEls = document.querySelectorAll('.playerInfo');
 
         const playerInfoArray = [...playerInfoEls];
+
 
         const checkPlayerName = uniq(playerInfoArray
             .map(item => item.querySelector('.playerName').value)
             .filter(item => item != '')
         );
 
-        // console.log(checkPlayerName);
-
         const didSelectPiece = playerInfoEls.length === document.querySelectorAll('.playerPieces:checked').length;
-
         const hasUniqPlayer = playerInfoEls.length === checkPlayerName.length;
 
-        console.log(hasUniqPlayer);
-
-        // console.log(didSelectPiece);
-
+        //--------- check if every player picked a piece
         if (didSelectPiece) {
+
             const playerInfoList = playerInfoArray.map((item, i) => {
 
-                // item.querySelector('.playerName').style.border = '1px solid black';
+                fullPiecesName.push(item.querySelector('.playerPieces:checked').getAttribute('selection-data'));
 
                 return {
                     name: item.querySelector('.playerName').value,
                     playerIndex: i,
                     pieceName: item.querySelector('.playerPieces:checked').getAttribute('selection-data'),
-                }
-
+                };
 
             });
 
-            // console.log(playerInfoList);
         }
 
+        if (playerInfoArray.length > checkPlayerName.length && !didSelectPiece) {
+            alertBox.innerHTML = 'You have not entered all the player names & select all the player pieces';
+        } if (playerInfoArray.length > checkPlayerName.length && didSelectPiece) {
+            alertBox.innerHTML = 'You have not entered all the player names';
+        } if (playerInfoArray.length === checkPlayerName.length && !didSelectPiece) {
+            alertBox.innerHTML = 'You have not select all the player pieces';
+        } if (playerInfoArray.length === checkPlayerName.length && didSelectPiece) {
+            alertBox.innerHTML = '';
+            playerModalContainer.style.visibility = 'hidden';
 
-
-
-        console.log(playerInfoEls);
+        }
 
     });
 
-
+    // console.log(fullPiecesName);
 
 }
 

@@ -14,11 +14,14 @@ window.addEventListener('load', () => {
     // document.body.appendChild(imgDiv);
     // imgDiv.src = `${baseURL}dog.png`;
 
+    const motherboard = document.createElement('div');
+    document.body.appendChild(motherboard);
+    motherboard.setAttribute('id','motherboard');
 
     //------------ create main board div
     const mainBoardDiv = document.createElement('div');
     //------------ append mainBoardDiv
-    document.body.appendChild(mainBoardDiv);
+    motherboard.appendChild(mainBoardDiv);
     //------------ main board div info
     mainBoardDiv.setAttribute('id', 'mainGameBoard');
 
