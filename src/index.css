@@ -1,11 +1,9 @@
-
-
-/*--------- */
-
 #motherboard{
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    /* width: 90%; */
+    margin: 0 auto;
 }
 
 /*--------- main game board */
@@ -16,13 +14,14 @@
     height: 735px; 
     border: 1px solid black; 
 }
-
+/*--------- Buttons */
 #btnsContainer{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
+/* new game button */
 #newGameBtn{
     display: flex;
     width: 200px;
@@ -164,9 +163,6 @@
     background-color: orange;
     color: black;
 }
-#playerInfoContainer{
-    /* width: 70%; */
-}
 .playerInfo{
     display: flex;
     flex-direction: row;
@@ -257,10 +253,38 @@ label{
     opacity: 0.5;
     pointer-events: none;
 }
-.piecesLabel.enabled{
-
-}
 
 .alertBox{
     color: red;
+    font-size: 18px;
+    padding: 5px;
+}
+
+
+.testBtn{
+    display: flex;
+    width: 100px;
+    height: 100px;
+    background-color: purple;
+}
+.testBtn:hover{
+    background-color: orange;
+}
+
+
+#sideBar{
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 0.25rem;
+}
+
+.sb_playerContainer{
+    display: grid;
+    gap: 0.5rem;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.sb_header{
+    display: grid;
+
 }

@@ -1,6 +1,6 @@
 //import
 import { baseURL, createDomElement } from './utilis.js';
-import { each, forEach, uniq } from 'lodash';
+import { each, forEach, shuffle, uniq } from 'lodash';
 
 //---------- array of player piece objects
 const playerPiecesObj = [
@@ -83,14 +83,14 @@ function playerControl() {
 
     //----------- create new game button
     //----------- clicking this activates the player modal
-    const newGameBtn = document.createElement('div');
-    motherboard.appendChild(newGameBtn);
-    newGameBtn.setAttribute('id', 'newGameBtn');
-    newGameBtn.innerHTML = 'NEW GAME';
+    // const newGameBtn = document.createElement('div');
+    // motherboard.appendChild(newGameBtn);
+    // newGameBtn.setAttribute('id', 'newGameBtn');
+    // newGameBtn.innerHTML = 'NEW GAME';
 
-    newGameBtn.addEventListener('click', () => {
-        playerModalContainer.style.visibility = 'visible';
-    });
+    // newGameBtn.addEventListener('click', () => {
+    //     playerModalContainer.style.visibility = 'visible';
+    // });
 
     //--------------------- player modal ----------------------
 
@@ -133,8 +133,6 @@ function playerControl() {
     startGameBtn.innerHTML = 'START GAME';
     startGameBtn.style.display = 'none';
 
-
-
     //---------------- events when add player button is clicked
     addPlayerBtn.addEventListener('click', () => {
 
@@ -159,8 +157,6 @@ function playerControl() {
             playerInfo.appendChild(playerNumberText);
             playerNumberText.innerHTML = playerNum + ': ';
 
-
-
             //------------ create input field and choices for player pieces --------------
 
             const playerNameContainer = document.createElement('div');
@@ -180,8 +176,6 @@ function playerControl() {
             playerName.setAttribute('class', 'playerName');
             playerName.setAttribute('placeholder', 'enter player name');
             playerName.setAttribute('value', '');
-
-
 
             //------------  create choices for player pieces ------------ 
 
@@ -233,61 +227,119 @@ function playerControl() {
         }
     });
 
-    //---------- events when start game button is clicked
-    //---------- create playersObj with player names and chosen pieces
-
+    //----------- create a div to alert if there are any missing info from player info inputs
     const alertBox = document.createElement('div');
     modalContentDiv.insertBefore(alertBox, playerInfoContainer);
     alertBox.setAttribute('class', 'alertBox');
 
+    //------------ events when start game button is clicked ------------
     startGameBtn.addEventListener('click', () => {
 
+        //--------- put all the HTML Divs with the class "playerInfo" & out them into an array
         const playerInfoEls = document.querySelectorAll('.playerInfo');
-
         const playerInfoArray = [...playerInfoEls];
 
-
+        //--------- check if all the player names are unique and are not empty
         const checkPlayerName = uniq(playerInfoArray
-            .map(item => item.querySelector('.playerName').value)
-            .filter(item => item != '')
-        );
+            .map((item, index) => item.querySelector('.playerName').value)
+            .filter(item => item != ''));
 
+        //--------- check if all the pieces chosen
         const didSelectPiece = playerInfoEls.length === document.querySelectorAll('.playerPieces:checked').length;
+        //--------- check if all the unique names have been entered
         const hasUniqPlayer = playerInfoEls.length === checkPlayerName.length;
 
+
         //--------- check if every player picked a piece
-        if (didSelectPiece) {
+        if (didSelectPiece && hasUniqPlayer) {
 
             const playerInfoList = playerInfoArray.map((item, i) => {
-
                 fullPiecesName.push(item.querySelector('.playerPieces:checked').getAttribute('selection-data'));
-
                 return {
                     name: item.querySelector('.playerName').value,
                     playerIndex: i,
                     pieceName: item.querySelector('.playerPieces:checked').getAttribute('selection-data'),
+                    cash: '200',
                 };
+            });
+
+            playerModalContainer.style.visibility = 'hidden';
+
+            // const sideBar_El = document.querySelector('#sideBar');
+
+            const randomPlayerOrder = shuffle(playerInfoList);
+
+            const sideBarEl = document.querySelector('#sideBar');
+
+            const sb_header = document.createElement('div');
+            sideBarEl.appendChild(sb_header);
+            sb_header.setAttribute('class', 'sb_header');
+
+            const sb_orderNum = document.createElement('div');
+            sb_header.appendChild(sb_orderNum);
+            sb_orderNum.innerHTML = 'ORDER';
+            sb_orderNum.setAttribute('class', 'sb_order');
+
+            const sb_name = document.createElement('div');
+            sb_header.appendChild(sb_name);
+            sb_name.innerHTML = 'NAME';
+            sb_name.setAttribute('class', 'sb_name');
+
+            const sb_piece = document.createElement('div');
+            sb_header.appendChild(sb_piece);
+            sb_piece.innerHTML = 'PIECE';
+            sb_piece.setAttribute('class', 'sb_piece');
+
+            const sb_cash = document.createElement('div');
+            sb_header.appendChild(sb_cash);
+            sb_cash.innerHTML = 'CASH';
+            sb_cash.setAttribute('class', 'sb_cash');
+
+            randomPlayerOrder.forEach((item, index) => {
+
+                //----- container div to display the following: order, name, pieceName, cash
+                const sb_playerInfoContainer = document.createElement('div');
+                sideBarEl.appendChild(sb_playerInfoContainer);
+                sb_playerInfoContainer.setAttribute('class', 'sb_playerContainer');
+
+                //----- display player order
+                const sb_orderDisplayDiv = document.createElement('div');
+                sb_playerInfoContainer.appendChild(sb_orderDisplayDiv);
+                sb_orderDisplayDiv.innerHTML = index + 1;
+                console.log(index + 1);
+                sb_orderDisplayDiv.setAttribute('class', 'sb_order');
+
+                //------ display player name
+                const sb_nameDisplayDiv = document.createElement('div');
+                sb_playerInfoContainer.appendChild(sb_nameDisplayDiv);
+                sb_nameDisplayDiv.innerHTML = item.name;
+                sb_nameDisplayDiv.setAttribute('class', 'sb_name');
+
+                //------ display player piece
+                const sb_pieceDisplayDiv = document.createElement('div');
+                sb_playerInfoContainer.appendChild(sb_pieceDisplayDiv);
+                sb_pieceDisplayDiv.innerHTML = item.pieceName;
+                sb_pieceDisplayDiv.setAttribute('class', 'sb_piece');
+
+                //------ display cash amount
+                let sb_cashTotal = document.createElement('div');
+                sb_playerInfoContainer.appendChild(sb_cashTotal);
+                sb_cashTotal.innerHTML = item.cash;
+                sb_cashTotal.setAttribute('class', 'sb_cashTotal');
+
 
             });
 
-        }
-
-        if (playerInfoArray.length > checkPlayerName.length && !didSelectPiece) {
-            alertBox.innerHTML = 'You have not entered all the player names & select all the player pieces';
-        } if (playerInfoArray.length > checkPlayerName.length && didSelectPiece) {
-            alertBox.innerHTML = 'You have not entered all the player names';
-        } if (playerInfoArray.length === checkPlayerName.length && !didSelectPiece) {
+        } if (!hasUniqPlayer && !didSelectPiece) {
+            alertBox.innerHTML = 'You have not entered all the unique player names <br /> &  select all the player pieces';
+            alertBox.style.textAlign = 'center';
+        } if (!hasUniqPlayer && didSelectPiece) {
+            alertBox.innerHTML = 'You have not entered all the unique player names.';
+        } if (hasUniqPlayer && !didSelectPiece) {
             alertBox.innerHTML = 'You have not select all the player pieces';
-        } if (playerInfoArray.length === checkPlayerName.length && didSelectPiece) {
-            alertBox.innerHTML = '';
-            playerModalContainer.style.visibility = 'hidden';
-
         }
 
     });
-
-    // console.log(fullPiecesName);
-
 }
 
 export { playerPiecesObj, playerControl }

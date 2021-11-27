@@ -309,9 +309,7 @@ function createTiles(container) {
     ]);
 
     //--------- sort the array based on the id order & return the new array
-    allTilesObj.sort((a, b) => {
-        return a.id - b.id;
-    });
+    allTilesObj.sort((a, b) => (a.id - b.id));
     return allTilesObj;
 
 }
@@ -346,6 +344,7 @@ function createCornerTiles(obj) {
             cornerTile.style.backgroundColor = 'orange';
             cornerTile.style.top = (boardWidth - tileHeight) + 'px';
             cornerTile.style.left = (boardWidth - tileHeight) + 'px';
+            // cornerTile.style.backgroundImage = `url(${baseURL}free-parking.png)`;
         } if (cornerObjEl[i].type === 'jail') {
             cornerTile.style.backgroundColor = 'orange';
             cornerTile.style.top = (boardWidth - tileHeight) + 'px';
@@ -400,7 +399,10 @@ function createSmallTileSec(obj, sidePos) {
         secContainerDiv.style.left = tileHeight + 'px';
         secContainerDiv.style.transformOrigin = 'center';
         secContainerDiv.style.transform = 'rotate(180deg)';
-    } if (sidePosEl === 'LEFT') {
+    } if (sidePosEl === 'BOTTOM') {
+        secContainerDiv.style.top = boardWidth - tileHeight + 'px';
+        secContainerDiv.style.left = tileHeight + 'px';
+    }if (sidePosEl === 'LEFT') {
         secContainerDiv.style.transformOrigin = 'top left';
         secContainerDiv.style.transform = 'rotate(90deg)';
         secContainerDiv.style.top = tileHeight + 'px';
