@@ -1,11 +1,13 @@
 import _ from "lodash";
 
 //--------- create two divs for the dice
-function dice(gameContainer) {
+function dice(handler) {
 
     //---------- create a div housing all dice elements
     const mainDiceDiv = document.createElement('div');
-    gameContainer.appendChild(mainDiceDiv);
+    const sideBarEl = document.querySelector('#sideBar');
+    const sb_playerContainer_el = document.querySelector('.sb_playerContainer');
+    sideBarEl.appendChild(mainDiceDiv);
     //---------- div info
     mainDiceDiv.setAttribute('id', 'mainDiceDiv');
     
@@ -48,6 +50,8 @@ function dice(gameContainer) {
 
     //
     diceBtnContainer.addEventListener('click', ()=>{
+
+        let total = 0;
         
         for (let i = 1; i < 3; i++){
             
@@ -58,6 +62,13 @@ function dice(gameContainer) {
             console.log(diceNum);
 
             diceNumContainer.innerHTML =  diceNum;
+
+            total += diceNum;
+
+        }
+
+        if(handler){
+            handler(total);
         }
 
     });

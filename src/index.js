@@ -5,6 +5,7 @@ import { each, forEach, uniq, shuffle } from 'lodash';
 import { createTiles } from './tiles.js';
 import { dice } from './dice';
 import { playerPiecesObj, playerControl } from './player.js';
+import { posPlayer, createPlayerPieces } from './gamePiece.js';
 
 window.addEventListener('load', () => {
 
@@ -26,12 +27,16 @@ window.addEventListener('load', () => {
 
     const sideBar = document.createElement('div');
     motherboard.appendChild(sideBar);
-    sideBar.setAttribute('id','sideBar');
+    sideBar.setAttribute('id', 'sideBar');
 
     const newGameBtn = document.createElement('div');
     sideBar.appendChild(newGameBtn);
     newGameBtn.setAttribute('id', 'newGameBtn');
     newGameBtn.innerHTML = 'NEW GAME';
+
+    let playerList = [];
+
+    let currentPlayerIndex = 0;
 
     // const sideBar_PlayerInfoContainer = document.createElement('div');
     // sideBar.appendChild(sideBar_PlayerInfoContainer);
@@ -48,113 +53,121 @@ window.addEventListener('load', () => {
 
 
     //------------ initiate dice()
-    dice(mainBoardDiv);
+    dice(diceTotal => {
+        const newPos = (playerList[currentPlayerIndex].pos + diceTotal)%40;
+        posPlayer(playerList[currentPlayerIndex], newPos);
+    });
 
     //------------ initiate playerControl()]
-    playerControl();
+    playerControl(players => {
 
-    
-    
-     //---------------------Solutions to randomizing arrays -----------------
-    
+        playerList = players;
+        createPlayerPieces(playerList);
+
+    });
+
+
+
+    //---------------------Solutions to randomizing arrays -----------------
+
     // const testBtn = document.createElement('div');
     // sideBar.append(testBtn);
     // testBtn.setAttribute('class', 'testBtn');
-    
+
     // testBtn.addEventListener('click', () => {
 
-       
-        // const numArray = [3, 4, 7, 11, 21, 23];
-        // const randomOrderArray = [];
-        // const min = 1;
-        // const max = numArray.length - 1;
+
+    // const numArray = [3, 4, 7, 11, 21, 23];
+    // const randomOrderArray = [];
+    // const min = 1;
+    // const max = numArray.length - 1;
 
 
 
-        // //---------------------- Solution #3 (lodash Shuffle) ----------------------------
+    // //---------------------- Solution #3 (lodash Shuffle) ----------------------------
 
-        // console.log(shuffle([3, 4, 7, 11, 21, 23]));
-
-
-
-
-        //---------------------- Solution #2 (resursive function without for loop) ----------------------------
-
-        // function randomizeRecursive(sourceArray, _newArray){
-        //     let newArray = _newArray ? _newArray :[];
-
-        //     const currentNum = Math.floor(Math.random()*(sourceArray.length-1));
-
-        //     newArray.push(sourceArray[currentNum]);
-
-        //     sourceArray.splice(currentNum, 1);
-
-        //     if (sourceArray.length){
-        //         randomizeRecursive(sourceArray, newArray);
-        //     }
-
-        //     return newArray;
-
-        // }
-
-        // console.log(randomizeRecursive([3, 4, 7, 11, 21, 23]));
+    // console.log(shuffle([3, 4, 7, 11, 21, 23]));
 
 
 
-        //---------------------- Solution #1 (vanialla JS) ----------------------------
-        //---------------------- create an empty array to hold the numbers that will be removed from the original array
-        //---------------------- Run array in reverse
-        //---------------------- randomly choose one of the numbers from the original array
-        //---------------------- add the number in a new array, 
-        //---------------------- then remove that number from the original array;
 
-        // const numArray = [3, 4, 7, 11, 21, 23];
-        // const randomOrderArray = [];
-        // const min = 1;
-        // const max = numArray.length-1;
-        // const newNums = [];
+    //---------------------- Solution #2 (resursive function without for loop) ----------------------------
 
-        // for (let i = numArray.length-1; i>=0; i--){
+    // function randomizeRecursive(sourceArray, _newArray){
+    //     let newArray = _newArray ? _newArray :[];
 
-        //     const currentNum = Math.floor(Math.random()*(numArray.length-1));
+    //     const currentNum = Math.floor(Math.random()*(sourceArray.length-1));
 
-        //     console.log(currentNum);
+    //     newArray.push(sourceArray[currentNum]);
 
-        //     newNums.push(numArray[currentNum]);
+    //     sourceArray.splice(currentNum, 1);
 
-        //     numArray.splice(currentNum, 1);
+    //     if (sourceArray.length){
+    //         randomizeRecursive(sourceArray, newArray);
+    //     }
 
-        // }
+    //     return newArray;
 
-        // console.log(newNums);
+    // }
+
+    // console.log(randomizeRecursive([3, 4, 7, 11, 21, 23]));
 
 
 
-        //---------------------- my inefficient way (save for record) ---------------------
-        // for (let i = min; i < max; i++) {
+    //---------------------- Solution #1 (vanialla JS) ----------------------------
+    //---------------------- create an empty array to hold the numbers that will be removed from the original array
+    //---------------------- Run array in reverse
+    //---------------------- randomly choose one of the numbers from the original array
+    //---------------------- add the number in a new array, 
+    //---------------------- then remove that number from the original array;
 
-        //     const randomNum = (min, max) => {
-        //         const min2 = Math.ceil(min);
-        //         const max2 = Math.floor(max);
-        //         const max3 = max2 - 1;
-        //         return Math.floor(Math.random() * (max3 - min2 + 1)) + min2;
-        //     };
+    // const numArray = [3, 4, 7, 11, 21, 23];
+    // const randomOrderArray = [];
+    // const min = 1;
+    // const max = numArray.length-1;
+    // const newNums = [];
 
-        //     const realRandomNum = randomNum(min, max);
+    // for (let i = numArray.length-1; i>=0; i--){
 
-        //     randomOrderArray.push(realRandomNum);
+    //     const currentNum = Math.floor(Math.random()*(numArray.length-1));
 
-        //     uniq_array = _.uniq(randomOrderArray);
+    //     console.log(currentNum);
 
-        //     if(uniq_array.length < randomOrderArray.length){
-        //         i = uniq_array.length;
-        //     }else{
-        //         i = i-1;
-        //     }
+    //     newNums.push(numArray[currentNum]);
 
-        // };
+    //     numArray.splice(currentNum, 1);
 
-        // console.log('removed: ' + uniq_array);
+    // }
+
+    // console.log(newNums);
+
+
+
+    //---------------------- my inefficient way (save for record) ---------------------
+    // for (let i = min; i < max; i++) {
+
+    //     const randomNum = (min, max) => {
+    //         const min2 = Math.ceil(min);
+    //         const max2 = Math.floor(max);
+    //         const max3 = max2 - 1;
+    //         return Math.floor(Math.random() * (max3 - min2 + 1)) + min2;
+    //     };
+
+    //     const realRandomNum = randomNum(min, max);
+
+    //     randomOrderArray.push(realRandomNum);
+
+    //     uniq_array = _.uniq(randomOrderArray);
+
+    //     if(uniq_array.length < randomOrderArray.length){
+    //         i = uniq_array.length;
+    //     }else{
+    //         i = i-1;
+    //     }
+
+    // };
+
+    // console.log('removed: ' + uniq_array);
 
 
     // });

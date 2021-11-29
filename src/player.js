@@ -79,7 +79,7 @@ function disableSelected() {
 
 
 //----------------------- main player control function ------------------
-function playerControl() {
+function playerControl(handler) {
 
     //----------- create new game button
     //----------- clicking this activates the player modal
@@ -255,15 +255,20 @@ function playerControl() {
 
             const playerInfoList = playerInfoArray.map((item, i) => {
                 fullPiecesName.push(item.querySelector('.playerPieces:checked').getAttribute('selection-data'));
+                const pieceName = item.querySelector('.playerPieces:checked').getAttribute('selection-data');
                 return {
                     name: item.querySelector('.playerName').value,
                     playerIndex: i,
-                    pieceName: item.querySelector('.playerPieces:checked').getAttribute('selection-data'),
+                    pieceName,
                     cash: '200',
+                    pos: '0',
+                    src: `${baseURL}${pieceName}.png`,
                 };
             });
 
             playerModalContainer.style.visibility = 'hidden';
+            const mainDiceDivEl = document.querySelector('#mainDiceDiv');
+            mainDiceDivEl.style.visibility = 'visible';
 
             // const sideBar_El = document.querySelector('#sideBar');
 
@@ -326,10 +331,10 @@ function playerControl() {
                 sb_playerInfoContainer.appendChild(sb_cashTotal);
                 sb_cashTotal.innerHTML = item.cash;
                 sb_cashTotal.setAttribute('class', 'sb_cashTotal');
-
-
             });
-
+            if(handler){
+                handler(randomPlayerOrder);
+            }
         } if (!hasUniqPlayer && !didSelectPiece) {
             alertBox.innerHTML = 'You have not entered all the unique player names <br /> &  select all the player pieces';
             alertBox.style.textAlign = 'center';
@@ -337,8 +342,7 @@ function playerControl() {
             alertBox.innerHTML = 'You have not entered all the unique player names.';
         } if (hasUniqPlayer && !didSelectPiece) {
             alertBox.innerHTML = 'You have not select all the player pieces';
-        }
-
+        } 
     });
 }
 

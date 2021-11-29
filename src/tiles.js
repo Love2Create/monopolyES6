@@ -1,5 +1,6 @@
 //import
 import { flatten } from 'lodash';
+import { baseURL, createDomElement } from './utilis.js';
 
 
 // declare all tile objects
@@ -8,22 +9,22 @@ const cornerTilesObj = [
     {
         name: 'go',
         type: 'go',
-        id: '0',
+        id: 'tile_0',
     },
     {
         name: 'jail',
         type: 'jail',
-        id: '10',
+        id: 'tile_10',
     },
     {
         name: 'free Parking',
         type: 'freeParking',
-        id: '20',
+        id: 'tile_20',
     },
     {
         name: 'Go to Jail',
         type: 'goJail',
-        id: '30',
+        id: 'tile_30',
     }
 ]
 
@@ -34,56 +35,56 @@ const bottomTilesObj = [
         type: 'property',
         color: 'brown',
         cost: '60',
-        id: '1',
+        id: 'tile_1',
     },
     {
         name: 'Community Chest',
         type: 'chest',
-        id: '2',
+        id: 'tile_2',
     },
     {
         name: 'Baltic Avenue',
         color: 'brown',
         cost: '200',
-        id: '3',
+        id: 'tile_3',
     },
     {
         name: 'Income Tax',
         color: 'brown',
         cost: '200',
-        id: '4',
+        id: 'tile_4',
     },
     {
         name: 'Reading Railroad',
         type: 'railroad',
         cost: '200',
-        id: '5',
+        id: 'tile_5',
     },
     {
         name: 'Oriental Avenue',
         type: 'property',
         color: 'lightBlue',
         cost: '100',
-        id: '6',
+        id: 'tile_6',
     },
     {
         name: 'Chance',
         type: 'chance',
-        id: '7',
+        id: 'tile_7',
     },
     {
         name: 'Vermont Avenue',
         type: 'property',
         color: 'lightBlue',
         cost: '100',
-        id: '8',
+        id: 'tile_8',
     },
     {
         name: 'Connecticut Avenue',
         type: 'property',
         color: 'lightBlue',
         cost: '120',
-        id: '9',
+        id: 'tile_9',
     }
 ]
 
@@ -94,57 +95,57 @@ const leftTilesObj = [
         type: 'property',
         color: 'pink',
         cost: '140',
-        id: '11',
+        id: 'tile_11',
     },
     {
         name: 'Electric Company',
         type: 'Electric',
         cost: '150',
-        id: '12',
+        id: 'tile_12',
     },
     {
         name: 'State Avenue',
         color: 'pink',
         cost: '140',
-        id: '13',
+        id: 'tile_13',
     },
     {
         name: 'Virginia Avenue',
         color: 'pink',
         cost: '160',
-        id: '14',
+        id: 'tile_14',
     },
     {
         name: 'Pennseylvania Railroad',
         type: 'railroad',
         cost: '200',
-        id: '15',
+        id: 'tile_15',
     },
     {
         name: 'St. James Place',
         type: 'property',
         color: 'orange',
         cost: '180',
-        id: '16',
+        id: 'tile_16',
     },
     {
         name: 'Commmunity Chest',
         type: 'chest',
-        id: '17',
+        id: 'tile_17',
     },
     {
         name: 'Tennessee Avenue',
         type: 'property',
         color: 'orange',
         cost: '180',
-        id: '18',
+        id: 'tile_18',
     },
     {
         name: 'New York Avenue',
         type: 'property',
         color: 'orange',
         cost: '200',
-        id: '19',
+        id: 'tile_19',
     }
 ]
 
@@ -155,30 +156,30 @@ const topTilesObj = [
         type: 'property',
         color: 'red',
         cost: '220',
-        id: '21',
+        id: 'tile_21',
     },
     {
         name: 'Chance',
         type: 'chance',
-        id: '22',
+        id: 'tile_22',
     },
     {
         name: 'Indiana Avenue',
         color: 'red',
         cost: '220',
-        id: '23',
+        id: 'tile_23',
     },
     {
         name: 'Illinois Avenue',
         color: 'red',
         cost: '240',
-        id: '24',
+        id: 'tile_24',
     },
     {
         name: 'B & O Railroad',
         type: 'railroad',
         cost: '200',
-        id: '25',
+        id: 'tile_25',
     },
     {
         name: 'Atlantic Avenue',
@@ -192,20 +193,20 @@ const topTilesObj = [
         type: 'property',
         color: 'yellow',
         cost: '260',
-        id: '27',
+        id: 'tile_27',
     },
     {
         name: 'Water Works',
         type: 'water',
         cost: '150',
-        id: '28',
+        id: 'tile_28',
     },
     {
         name: 'Marvin Avenue',
         type: 'property',
         color: 'yellow',
         cost: '280',
-        id: '29',
+        id: 'tile_29',
     }
 ]
 
@@ -216,56 +217,56 @@ const rightTilesObj = [
         type: 'property',
         color: 'green',
         cost: '300',
-        id: '31',
+        id: 'tile_31',
     },
     {
         name: 'North Carolina Avenue',
         type: 'property',
         color: 'green',
         cost: '300',
-        id: '32',
+        id: 'tile_32',
     },
     {
         name: 'Community Chest',
         type: 'chest',
-        id: '33',
+        id: 'tile_33',
     },
     {
         name: 'Pennsylvania Avenue',
         color: 'green',
         cost: '320',
-        id: '34',
+        id: 'tile_34',
     },
     {
         name: 'Short Line',
         type: 'railroad',
         cost: '200',
-        id: '35',
+        id: 'tile_35',
     },
     {
         name: 'Chance',
         type: 'chance',
-        id: '36',
+        id: 'tile_36',
     },
     {
         name: 'Park Place',
         type: 'property',
         color: 'blue',
         cost: '350',
-        id: '37',
+        id: 'tile_37',
     },
     {
         name: 'Luxury Tax',
         type: 'tax',
         cost: '100',
-        id: '38',
+        id: 'tile_38',
     },
     {
         name: 'Boardwalk',
         type: 'property',
         color: 'blue',
         cost: '400',
-        id: '39',
+        id: 'tile_39',
     }
 ]
 
@@ -334,21 +335,30 @@ function createCornerTiles(obj) {
         cornerTile.style.width = tileHeight + 'px';
         cornerTile.style.height = tileHeight + 'px';
 
-        
+        const corner_playerContainer = document.createElement('div');
+        cornerTile.appendChild(corner_playerContainer);
+        corner_playerContainer.setAttribute('class','corner_playerContainer playerContainer');
+
         //------------ adding HTML element info to the each element of the array
         cornerObjEl[i].element = cornerTile;
 
-
-        //------------ position each corner tiles
+        //------------ position the corner tiles
         if (cornerObjEl[i].type === 'go') {
             cornerTile.style.backgroundColor = 'orange';
             cornerTile.style.top = (boardWidth - tileHeight) + 'px';
             cornerTile.style.left = (boardWidth - tileHeight) + 'px';
+            // cornerTile.setAttribute('id', 'goTile');
             // cornerTile.style.backgroundImage = `url(${baseURL}free-parking.png)`;
         } if (cornerObjEl[i].type === 'jail') {
             cornerTile.style.backgroundColor = 'orange';
             cornerTile.style.top = (boardWidth - tileHeight) + 'px';
             cornerTile.style.left = '0px';
+            
+            const jailEl = document.querySelector('id', '10');
+            const graphicContainer = document.createElement('div');
+            // graphicContainer.setAttribute('id', graphicContainer);
+
+            // cornerTile.style.backgroundImage = `url(${baseURL}jail.png)`;
         } if (cornerObjEl[i].type === 'freeParking') {
             cornerTile.style.backgroundColor = 'orange';
             cornerTile.style.top = '0px';
@@ -372,7 +382,6 @@ function createSmallTileSec(obj, sidePos) {
     //---------- create container div
     const secContainerDiv = document.createElement('div');
     mainBoardDiv.appendChild(secContainerDiv);
-    //---------- div info
     secContainerDiv.style.width = smallTilesSecWidth + 'px';
     secContainerDiv.style.height = tileHeight + 'px';
     secContainerDiv.style.position = 'absolute';
@@ -391,6 +400,11 @@ function createSmallTileSec(obj, sidePos) {
         smallTileDiv.style.width = tileWidth + 'px';
         smallTileDiv.style.height = tileHeight + 'px';
         smallTileDiv.style.left = tileWidth * i + 'px';
+
+        const small_playerContainer = document.createElement('div');
+        smallTileDiv.appendChild(small_playerContainer);
+        small_playerContainer.setAttribute('class', 'small_playerContainer playerContainer')
+
     }
 
     //---------------- positioning all small tiles
@@ -399,7 +413,7 @@ function createSmallTileSec(obj, sidePos) {
         secContainerDiv.style.left = tileHeight + 'px';
         secContainerDiv.style.transformOrigin = 'center';
         secContainerDiv.style.transform = 'rotate(180deg)';
-    } if (sidePosEl === 'BOTTOM') {
+    }if (sidePosEl === 'BOTTOM') {
         secContainerDiv.style.top = boardWidth - tileHeight + 'px';
         secContainerDiv.style.left = tileHeight + 'px';
     }if (sidePosEl === 'LEFT') {
@@ -407,15 +421,18 @@ function createSmallTileSec(obj, sidePos) {
         secContainerDiv.style.transform = 'rotate(90deg)';
         secContainerDiv.style.top = tileHeight + 'px';
         secContainerDiv.style.left = tileHeight + 'px';
-    } if (sidePosEl === 'RIGHT') {
+    }if (sidePosEl === 'RIGHT') {
         secContainerDiv.style.transformOrigin = 'top left';
         secContainerDiv.style.transform = 'rotate(270deg)';
         secContainerDiv.style.top = boardWidth - tileHeight + 'px';
         secContainerDiv.style.left = boardWidth - tileHeight + 'px';
-    } if (sidePosEl === 'BOTTOM') {
+    }if (sidePosEl === 'BOTTOM') {
         secContainerDiv.style.top = boardWidth - tileHeight + 'px';
         secContainerDiv.style.left = tileHeight + 'px';
     }
+
+
+
 }
 
 
