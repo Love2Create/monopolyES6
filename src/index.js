@@ -5,7 +5,7 @@ import { each, forEach, uniq, shuffle } from 'lodash';
 import { createTiles } from './tiles.js';
 import { dice } from './dice';
 import { playerPiecesObj, playerControl } from './player.js';
-import { posPlayer, createPlayerPieces } from './gamePiece.js';
+import { posPlayer, moveGamePieceAnimation, createPlayerPieces } from './gamePiece.js';
 
 window.addEventListener('load', () => {
 
@@ -55,7 +55,7 @@ window.addEventListener('load', () => {
     //------------ initiate dice()
     dice(diceTotal => {
         const newPos = (playerList[currentPlayerIndex].pos + diceTotal)%40;
-        posPlayer(playerList[currentPlayerIndex], newPos);
+        moveGamePieceAnimation(playerList[currentPlayerIndex], newPos);
     });
 
     //------------ initiate playerControl()]
